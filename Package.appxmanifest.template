@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Use this ONLY if you package the app as MSIX (Windows Application Packaging Project) to unlock
+  the native Windows.Devices.Sms / Windows.ApplicationModel.Calls WinRT path for a built-in
+  cellular modem (e.g. Surface Pro LTE). Rename to Package.appxmanifest inside a WAP project that
+  references CellularDesktop.csproj. Unpackaged (plain .exe) deployment cannot request these
+  restricted capabilities - it will always use the AT-command modem path instead.
+-->
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap mp rescap">
+
+  <Identity Name="CellularDesktop" Publisher="CN=CellularDesktop" Version="1.0.0.0" />
+
+  <Properties>
+    <DisplayName>Cellular Desktop</DisplayName>
+    <PublisherDisplayName>CellularDesktop</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.22621.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+
+  <Applications>
+    <Application Id="App" Executable="CellularDesktop.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+        DisplayName="Cellular Desktop"
+        Description="Send/receive SMS and make/receive calls over a physical SIM."
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+    <!-- Restricted capabilities: require a store association / capability approval from Microsoft. -->
+    <rescap:Capability Name="cellularMessaging" />
+    <rescap:Capability Name="phoneCallHistory" />
+    <DeviceCapability Name="serialcommunication">
+      <!-- Fallback: lets a packaged app still open COM ports for AT-command modems -->
+      <Device Id="any">
+        <Function Type="name:serialPort" />
+      </Device>
+    </DeviceCapability>
+  </Capabilities>
+</Package>

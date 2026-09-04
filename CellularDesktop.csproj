@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>CellularDesktop</RootNamespace>
+    <AssemblyName>CellularDesktop</AssemblyName>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Platforms>x64</Platforms>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Needed to project Windows.Devices.Sms / Windows.ApplicationModel.Calls WinRT APIs -->
+    <CsWinRTIncludes>Windows.Devices.Sms;Windows.Devices.Enumeration</CsWinRTIncludes>
+    <GenerateAppInstallerFile>false</GenerateAppInstallerFile>
+    <WindowsSdkPackageVersion>10.0.19041.57</WindowsSdkPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Serial port access for AT-command modems (USB GSM/LTE dongles, Bluetooth-tethered phones) -->
+    <PackageReference Include="System.IO.Ports" Version="8.0.0" />
+    <!-- Only needed if you want the native Windows.Devices.Sms path for a built-in cellular radio.
+         Requires the app to run with package identity (MSIX) on a machine with a cellular modem
+         that exposes an ISms-capable driver. Comment out if you only target AT-command modems. -->
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+
+</Project>
