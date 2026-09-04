@@ -19,7 +19,8 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore
-        run: dotnet restore CellularDesktop.sln
+        run: dotnet restore CellularDesktop.csproj
+      
 
       - name: Publish (single self-contained exe)
         run: >
