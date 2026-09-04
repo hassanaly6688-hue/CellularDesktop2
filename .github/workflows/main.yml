@@ -1,0 +1,60 @@
+name: Build CellularDesktop (Windows)
+
+on:
+
+push:
+
+branches: [ "main", "master" ]
+
+workflow_dispatch: {} # يسمح بتشغيل يدوي من تبويب Actions
+
+jobs:
+
+build:
+
+runs-on: windows-latest # رنر ويندوز مجاني من GitHub
+
+steps:
+
+- name: Checkout code
+
+uses: actions/checkout@v4
+
+- name: Setup .NET 8 SDK
+
+uses: actions/setup-dotnet@v4
+
+with:
+
+dotnet-version: '8.0.x'
+
+- name: Restore
+
+run: dotnet restore CellularDesktop.sln
+
+- name: Publish (single self-contained exe)
+
+run: >
+
+dotnet publish CellularDesktop/CellularDesktop.csproj
+
+-c Release
+
+-r win-x64
+
+--self-contained true
+
+-p:PublishSingleFile=true
+
+-o publish_output
+
+- name: Upload exe as artifact
+
+uses: actions/upload-artifact@v4
+
+with:
+
+name: CellularDesktop-exe
+
+path: publish_output/CellularDesktop.exe
+
